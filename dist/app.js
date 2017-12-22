@@ -1,3 +1,5 @@
+'use strict';
+
 // 在初始化app.js最开头就连接数据库
 require('./models/init');
 var express = require('express');
@@ -31,16 +33,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser(config.cookieName));
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use(
-  session({
-    secret: config.sessionSecret,
-    store: new MongoStore({
-      url: config.mongodbUrl
-    }),
-    resave: true,
-    saveUninitialized: true
-  })
-);
+app.use(session({
+  secret: config.sessionSecret,
+  store: new MongoStore({
+    url: config.mongodbUrl
+  }),
+  resave: true,
+  saveUninitialized: true
+}));
 
 app.use(auth.authUser);
 
@@ -48,33 +48,32 @@ app.use('/', page);
 app.use('/api/v1', api);
 
 // catch 404 and forward to error handler
-app.use(function(req, res, next) {
+app.use(function (req, res, next) {
   var err = new Error('Not Found');
   err.status = 404;
   next(err);
 });
 
 // error handler
-app.use(function(err, req, res, next) {
+app.use(function (err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message || err;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
 
   // the error response
   res.status(err.status || 500).format({
-    json() {
-      res.send({error: err.toString()});
+    json: function json() {
+      res.send({ error: err.toString() });
     },
-
-    html() {
+    html: function html() {
       res.render('error');
     },
-
-    default() {
-      const message = `${errorDetails}`;
-      res.send(`500 Internal server error:\n${err.toString()}`);
-    },
+    default: function _default() {
+      var message = '' + errorDetails;
+      res.send('500 Internal server error:\n' + err.toString());
+    }
   });
 });
 
 module.exports = app;
+//# sourceMappingURL=app.js.map

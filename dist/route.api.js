@@ -1,3 +1,5 @@
+'use strict';
+
 var bcrypt = require('bcrypt');
 var express = require('express');
 var router = express.Router();
@@ -7,13 +9,13 @@ var config = require('./config');
 var auth = require('./middlewares/auth');
 
 /* GET users lists. */
-router.get('/users', function(req, res, next) {
+router.get('/users', function (req, res, next) {
   res.send('respond with a resource');
 });
 
 /* GET posts lists */
-router.get('/posts', function(req, res, next) {
-  PostModel.find({}, {}, function(err, posts) {
+router.get('/posts', function (req, res, next) {
+  PostModel.find({}, {}, function (err, posts) {
     if (err) {
       next(err);
     } else {
@@ -23,14 +25,14 @@ router.get('/posts', function(req, res, next) {
 });
 
 /* GET one post */
-router.get('/posts/:id', function(req, res, next) {
+router.get('/posts/:id', function (req, res, next) {
   var id = req.params.id;
 
-  PostModel.findOne({ _id: id }, function(err, post) {
+  PostModel.findOne({ _id: id }, function (err, post) {
     if (err) {
       next(err);
     } else {
-      res.json({ post });
+      res.json({ post: post });
     }
   });
 });
@@ -44,7 +46,7 @@ router.post('/posts', auth.adminRequired, function (req, res, next) {
   post.title = title;
   post.content = content;
   post.authorId = res.locals.currentUser._id;
-  post.save(function(err, doc) {
+  post.save(function (err, doc) {
     if (err) {
       next(err);
     } else {
@@ -54,12 +56,12 @@ router.post('/posts', auth.adminRequired, function (req, res, next) {
 });
 
 /* PATCH edit post */
-router.patch('/posts/:id', auth.adminRequired, function(req, res, next) {
+router.patch('/posts/:id', auth.adminRequired, function (req, res, next) {
   var id = req.params.id;
   var title = req.body.title;
   var content = req.body.content;
 
-  PostModel.findOneAndUpdate({ _id: id }, { title, content }, function(err) {
+  PostModel.findOneAndUpdate({ _id: id }, { title: title, content: content }, function (err) {
     if (err) {
       next(err);
     } else {
@@ -69,7 +71,7 @@ router.patch('/posts/:id', auth.adminRequired, function(req, res, next) {
 });
 
 /* POST signup user */
-router.post('/signup', function(req, res, next) {
+router.post('/signup', function (req, res, next) {
   var name = req.body.name;
   var pass = req.body.pass;
   var rePass = req.body.rePass;
@@ -81,7 +83,7 @@ router.post('/signup', function(req, res, next) {
   var user = new UserModel();
   user.name = name;
   user.pass = bcrypt.hashSync(pass, 10);
-  user.save(function(err) {
+  user.save(function (err) {
     if (err) {
       next(err);
     } else {
@@ -91,11 +93,11 @@ router.post('/signup', function(req, res, next) {
 });
 
 /* POST signin user */
-router.post('/signin', function(req, res, next) {
+router.post('/signin', function (req, res, next) {
   var name = req.body.name || '';
   var pass = req.body.pass || '';
 
-  UserModel.findOne({ name }, function(err, user) {
+  UserModel.findOne({ name: name }, function (err, user) {
     if (err || !user) {
       return next(new Error('找不到用户'));
     } else {
@@ -119,3 +121,4 @@ router.post('/signin', function(req, res, next) {
 });
 
 module.exports = router;
+//# sourceMappingURL=route.api.js.map
