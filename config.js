@@ -1,6 +1,6 @@
 module.exports = {
   cookieName: 'your_cookie_name',
-  mongodbUrl: 'mongodb://localhost:27017/firstapp',
+  mongodbUrl: 'mongodb://35.194.198.25:27017/first-app',
   admin: 'admin',
   sessionSecret: 'your_session_secret'
 }

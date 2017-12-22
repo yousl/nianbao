@@ -1,5 +1,5 @@
 {
-  "name": "first-app-sample-20",
+  "name": "nianbao",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -21,5 +21,10 @@
     "morgan": "~1.8.1",
     "serve-favicon": "~2.4.2",
     "supervisor": "^0.12.0"
-  }
+  },
+  "description": "a",
+  "main": "a",
+  "repository": "a",
+  "author": "a",
+  "license": "a"
 }
